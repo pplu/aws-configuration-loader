@@ -6,27 +6,69 @@
      }
    },
    "Resources": {
-      "QueueNameParam": {
+      "Queue1NameParam": {
          "Type": "AWS::SSM::Parameter",
          "Properties": {
-            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/QUEUE_NAME" ] ] },
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/QUEUE1_NAME" ] ] },
             "Type": "String",
-            "Value": { "Ref": "SQSQueue" },
-            "Description": "Name of the queue"
+            "Value": { "Ref": "SQSQueue1" },
+            "Description": "URL of the first queue"
          }
       },
-      "QueueRegionParam": {
+      "Queue2NameParam": {
          "Type": "AWS::SSM::Parameter",
          "Properties": {
-            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/QUEUE_REGION" ] ] },
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/QUEUE2_NAME" ] ] },
+            "Type": "String",
+            "Value": { "Ref": "SQSQueue2" },
+            "Description": "URL of the second queue"
+         }
+      },
+      "AKParam": {
+         "Type": "AWS::SSM::Parameter",
+         "Properties": {
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/AK" ] ] },
+            "Type": "String",
+            "Value": { "Ref": "AccessKey" },
+            "Description": "Access Key"
+         }
+      },
+      "SKParam": {
+         "Type": "AWS::SSM::Parameter",
+         "Properties": {
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/SK" ] ] },
+            "Type": "String",
+            "Value": { "Fn::GetAtt": [ "AccessKey", "SecretAccessKey" ] },
+            "Description": "Secret Key"
+         }
+      },
+      "RegionParam": {
+         "Type": "AWS::SSM::Parameter",
+         "Properties": {
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/REGION" ] ] },
             "Type": "String",
             "Value": { "Ref": "AWS::Region" },
             "Description": "Name of the queue"
          }
       },
-      "SQSQueue": {
+      "IAMUser": {
+        "Type": "AWS::IAM::User",
+        "Properties": { }
+      },
+      "AccessKey": {
+        "Type": "AWS::IAM::AccessKey",
+        "Properties": {
+          "UserName": { "Ref": "IAMUser" }
+        }
+      },
+      "SQSQueue1": {
+        "Type": "AWS::SQS::Queue",
+        "Properties": {}
+      },
+      "SQSQueue2": {
         "Type": "AWS::SQS::Queue",
         "Properties": {}
       }
+
    }
 }
