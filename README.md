@@ -25,7 +25,9 @@ https://limecodeblog.wordpress.com/2016/09/19/consul-cluster-in-aws-with-auto-sc
 AWS provides a service called SSM that exposes an API for storing parameters. These parameters can be strings and encrypted
 strings (enabled for storing secrets). This utility leverages the SSM Parameters API to expose parameters in a way
 that your application doesn't have to become aware of the SSM service. It does this exposing the parameters stored
-in the service via environment variables to your application. This practice is inspired by [https://12factor.net/es/config](Twelve factor App)
+in the service via environment variables to your application. This practice is inspired by https://12factor.net/es/config 
+(Twelve factor App). Note that once your application is configured via environment variables, it is independent of where
+the configuration is stored (you can easily adopt the same method if you are using etcd or consul).
 
 Usage
 =====
@@ -75,3 +77,18 @@ Caution
 =======
 
 This script only works with the SSM service definitions of Paws 0.34, which isn't published yet. Check out [https://github.com/pplu/aws-sdk-perl/tree/release/0.34] to be able to use the utility
+
+License
+=======
+
+This software is released under the Apache 2 License
+
+Author
+======
+
+Jose Luis Martinez
+
+Copyright
+=========
+
+(c) 2017 CAPSiDE SL
