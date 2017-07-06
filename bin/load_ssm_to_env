@@ -1,0 +1,37 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use Paws;
+
+my $cli_arg = shift @ARGV or die "Usage: $0 PREFIX";
+
+my $prefix = $cli_arg;
+
+my $ssm = Paws->service('SSM', region => 'eu-west-1');
+
+my @parameters;
+my $result = $ssm->GetParametersByPath(
+  MaxResults => 10,
+  Path => "/$prefix/",
+  WithDecryption => 1,
+);
+push @parameters, @{ $result->Parameters };
+
+while (my $nt = $result->NextToken) {
+  $result = $ssm->GetParametersByPath(
+    MaxResults => 10,
+    Path => "/$prefix/",
+    WithDecryption => 1,
+    NextToken => $nt,
+  );
+  push @parameters, @{ $result->Parameters };
+}
+
+foreach my $param (@parameters) {
+  my ($env_var) = ($param->Name =~ m/^\/$prefix\/(.*)$/);
+
+  $ENV{ $env_var } = $param->Value;
+}
+
+exec @ARGV;
