@@ -1,0 +1,32 @@
+{
+   "Description": "A stack to test ",
+   "Parameters": {
+     "StackName": {
+       "Type": "String"
+     }
+   },
+   "Resources": {
+      "QueueNameParam": {
+         "Type": "AWS::SSM::Parameter",
+         "Properties": {
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/QUEUE_NAME" ] ] },
+            "Type": "String",
+            "Value": { "Ref": "SQSQueue" },
+            "Description": "Name of the queue"
+         }
+      },
+      "QueueRegionParam": {
+         "Type": "AWS::SSM::Parameter",
+         "Properties": {
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/QUEUE_REGION" ] ] },
+            "Type": "String",
+            "Value": { "Ref": "AWS::Region" },
+            "Description": "Name of the queue"
+         }
+      },
+      "SQSQueue": {
+        "Type": "AWS::SQS::Queue",
+        "Properties": {}
+      }
+   }
+}
