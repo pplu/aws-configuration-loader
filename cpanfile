@@ -1,1 +1,1 @@
-requires 'Paws', '>= 0.33';
+requires 'Paws', '>= 0.34';
