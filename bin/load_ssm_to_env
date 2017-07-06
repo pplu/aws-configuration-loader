@@ -29,6 +29,8 @@ while (my $nt = $result->NextToken) {
   push @parameters, @{ $result->Parameters };
 }
 
+die "Didn't find any parameters with prefix /$prefix/" if (not @parameters);
+
 foreach my $param (@parameters) {
   my ($env_var) = ($param->Name =~ m/^\/$prefix\/(.*)$/);
 
