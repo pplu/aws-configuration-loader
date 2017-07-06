@@ -4,12 +4,13 @@ use strict;
 use warnings;
 use Paws;
 
-my $cli_arg = shift @ARGV or die "Usage: $0 PREFIX command";
-my @to_exec = @ARGV or die "Usage: $0 PREFIX command";
+my $cli_arg = shift @ARGV or die "Usage: $0 PREFIX:region command";
+my @to_exec = @ARGV or die "Usage: $0 PREFIX:region command";
 
-my $prefix = $cli_arg;
+my ($prefix, $region) = split /\:/, $cli_arg, 2;
+die "first argument to $0 has to be formatted as PREFIX:region" if (not defined $region);
 
-my $ssm = Paws->service('SSM', region => 'eu-west-1');
+my $ssm = Paws->service('SSM', region => $region);
 
 my @parameters;
 my $result = $ssm->GetParametersByPath(
