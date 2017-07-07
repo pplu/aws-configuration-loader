@@ -1,0 +1,32 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use ConfigLoader;
+
+my $first_arg = shift @ARGV or die "Usage: $0 APP:ENVIRONMENT:REGION file";
+my $file = shift @ARGV or die "Usage: $0 APP:ENVIRONMENT:REGION file";
+
+die "$file already exists" if (-e $file);
+
+my ($app, $environment, $region) = split /\:/, $first_arg, 3;
+die "first argument to $0 has to be formatted as APP:ENVIRONMENT:region"
+  if (not defined $app or not defined $region or not defined $environment);
+
+my $config = ConfigLoader->new(
+  region => $region,
+  app => $app,
+  environment => $environment
+);
+
+open my $fh, ">", $file or die "$!";
+
+# TODO: since we're only supporting SSM, this is OK
+my $prefix = $config->_ssm_prefix;
+foreach my $param (@{ $config->parameters }) {
+  my ($env_var) = ($param->Name =~ m/^$prefix(.*)$/);
+
+  printf $fh "%s=%s\n", $env_var, $param->Value;
+}
+
+close $fh;
