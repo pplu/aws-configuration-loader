@@ -13,14 +13,8 @@ deploy their applications as many times as needed at will, but that also means t
 created with new names. When we prepare an application for the cloud, we have to start caring about configuring the 
 applications, handling secrets for connecting to databases, etc.
 
-These configurations are often stored on services like
-
- - etcd: 
- - zookeeper 
- - consul
-
-Which you have to manage, and pay for servers (It's not always trivial! See: https://crewjam.com/etcd-aws/, https://github.com/stylight/etcd-bootstrap,
-https://limecodeblog.wordpress.com/2016/09/19/consul-cluster-in-aws-with-auto-scaling/)
+These configurations are often stored on services like etcd, zookeeper, consul, etc, which you have to manage, and pay for servers. It's not always trivial! See: https://crewjam.com/etcd-aws/, https://github.com/stylight/etcd-bootstrap,
+https://limecodeblog.wordpress.com/2016/09/19/consul-cluster-in-aws-with-auto-scaling/.
 
 AWS provides a service called SSM that exposes an API for storing parameters. These parameters can be strings and encrypted
 strings (enabled for storing secrets). This utility leverages the SSM Parameters API to expose parameters in a way
@@ -32,18 +26,18 @@ the configuration is stored (you can easily adopt the same method if you are usi
 Usage
 =====
 
-Create SSM parameters with names that follow this structure: `/ENVIRONMENT_NAME/ENVIRONMENT_VARIABLE`.
+Create SSM parameters with names that follow this structure: `/APP_NAME/ENVIRONMENT_NAME/ENVIRONMENT_VARIABLE`.
 
 When you invoke
 
 ```
-bin/load_ssm_to_env ENVIRONMENT_NAME:region your_app
+bin/load_ssm_to_env APP_NAME:ENVIRONMENT_NAME:region your_app
 ```
 
-`your_app` will have all the SSM parameters' values that start with `/ENVIRONMENT_NAME/` accessible as environment variables:
+`your_app` will have all the SSM parameters' values that start with `/APP_NAME/ENVIRONMENT_NAME/` accessible as environment variables:
 
-`/pre/DBHOST` will be accessible in the environment as `DBHOST`
-`/pre/DBPASS` will be accessible in the environment as `DBPASS`
+`/appname/pre/DBHOST` will be accessible in the environment as `DBHOST`
+`/appname/pre/DBPASS` will be accessible in the environment as `DBPASS`
 
 Parameter creation
 ==================
@@ -66,7 +60,7 @@ You can limit an instance, via an Instance Role to only be able to access the se
          "Action":[
             "ssm:DescribeParameterByPath",
          ],
-         "Resource":"/pre/*",
+         "Resource":"/myapp/pre/*",
       }
    ]
 }

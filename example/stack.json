@@ -1,7 +1,10 @@
 {
    "Description": "A stack to test ",
    "Parameters": {
-     "StackName": {
+     "AppName": {
+       "Type": "String"
+     },
+     "EnvName": {
        "Type": "String"
      }
    },
@@ -9,7 +12,7 @@
       "Queue1NameParam": {
          "Type": "AWS::SSM::Parameter",
          "Properties": {
-            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/QUEUE1_NAME" ] ] },
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "AppName" }, "/", { "Ref": "EnvName" }, "/QUEUE1_NAME" ] ] },
             "Type": "String",
             "Value": { "Ref": "SQSQueue1" },
             "Description": "URL of the first queue"
@@ -18,7 +21,7 @@
       "Queue2NameParam": {
          "Type": "AWS::SSM::Parameter",
          "Properties": {
-            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/QUEUE2_NAME" ] ] },
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "AppName" }, "/", { "Ref": "EnvName" }, "/QUEUE2_NAME" ] ] },
             "Type": "String",
             "Value": { "Ref": "SQSQueue2" },
             "Description": "URL of the second queue"
@@ -27,7 +30,7 @@
       "AKParam": {
          "Type": "AWS::SSM::Parameter",
          "Properties": {
-            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/AK" ] ] },
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "AppName" }, "/", { "Ref": "EnvName" }, "/AK" ] ] },
             "Type": "String",
             "Value": { "Ref": "AccessKey" },
             "Description": "Access Key"
@@ -36,7 +39,7 @@
       "SKParam": {
          "Type": "AWS::SSM::Parameter",
          "Properties": {
-            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/SK" ] ] },
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "AppName" }, "/", { "Ref": "EnvName" }, "/SK" ] ] },
             "Type": "String",
             "Value": { "Fn::GetAtt": [ "AccessKey", "SecretAccessKey" ] },
             "Description": "Secret Key"
@@ -45,7 +48,7 @@
       "RegionParam": {
          "Type": "AWS::SSM::Parameter",
          "Properties": {
-            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "StackName" }, "/REGION" ] ] },
+            "Name": { "Fn::Join": [ "", [ "/", { "Ref": "AppName" }, "/", { "Ref": "EnvName" }, "/REGION" ] ] },
             "Type": "String",
             "Value": { "Ref": "AWS::Region" },
             "Description": "Name of the queue"
