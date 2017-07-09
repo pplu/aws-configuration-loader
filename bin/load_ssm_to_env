@@ -17,6 +17,10 @@ my $config = ConfigLoader->new(
   environment => $environment
 );
 
+if ($config->num_of_parameters == 0){
+  die "Couldn't find any config for app $app environment $environment";
+}
+
 # TODO: since we're only supporting SSM, this is OK
 my $prefix = $config->_ssm_prefix;
 foreach my $param (@{ $config->parameters }) {

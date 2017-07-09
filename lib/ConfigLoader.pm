@@ -32,6 +32,10 @@ package ConfigLoader;
     isa => 'ArrayRef[Paws::SSM::Parameter]',
     lazy => 1,
     builder => '_build_parameters',
+    traits => [ 'Array' ],
+    handles => {
+      num_of_parameters => 'count',
+    }
   );
 
   has _ssm_prefix => (
