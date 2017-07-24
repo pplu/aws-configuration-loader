@@ -2,6 +2,9 @@ package ConfigLoader;
   use Moose;
   use Paws;
 
+  #ABSTRACT: Use SSM Parameter service to retrieve configs for an application
+  our $VERSION = '0.01';
+
   has app => (
     is => 'ro',
     isa => 'Str',
