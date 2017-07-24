@@ -67,11 +67,6 @@ You can limit an instance, via an Instance Role to only be able to access the se
 ```
 See [http://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-working.html]
 
-Caution
-=======
-
-This script only works with the SSM service definitions of Paws 0.34, which isn't published yet. Check out [https://github.com/pplu/aws-sdk-perl/tree/release/0.34] to be able to use the utility
-
 License
 =======
 
